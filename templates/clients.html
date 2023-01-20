@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Clients</title>
+</head>
+<body>
+
+    <form action="/clients/add" method="POST">
+        <h1>Add a client</h1>
+        <input type="text" name="client_name">
+        <input type="submit" value="Add a client">
+    </form>
+
+    <table>
+        <tr>
+            <th>client</th>
+            <th>name</th>
+            <th>edit</th>
+            <th>delete</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+            <td><i class="bi bi-person"></i></td>
+            <td>
+                <a href="{{url_for('client', id=client.id)}}">
+                {{client["name"]}}
+                </a>
+            </td>
+            <td>
+                <a href="{{url_for('client_edit', id=client.id)}}">
+                edit
+                </a>
+            </td>
+            <td>
+                <a href="#" class="delete">delete</a>
+                <a href="/clients/delete?id={{client["id"]}}" class="confirm" style="display:none;"><i class="bi bi-check"></i></a>
+                <a href="#" class="cancel" style="display:none;"><i class="bi bi-x"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        $(function(){
+            $('.delete').click(function(){
+                $(this).hide();
+                $(this).siblings('.confirm, .cancel').show();
+            })
+            $('.cancel').click(function(){
+                $(this).hide();
+                $(this).siblings('.confirm').hide();
+                $(this).siblings('.delete').show();
+            })
+        })
+    </script>
+
+    
+</body>
+</html>
